@@ -18,16 +18,16 @@
         @csrf
         <div class="mb-3">
             <label class="form-label">Title</label>
-            <input name="title" type="text" class="form-control" value="{{old('title')}}">
+            <input name="title" type="text" class="form-control" required value="{{old('title')}}">
         </div>
         <div class="mb-3">
             <label  class="form-label">Description</label>
-            <textarea name="description" class="form-control"  rows="3">{{old('description')}}</textarea>
+            <textarea name="description" class="form-control"  rows="3" required>{{old('description')}}</textarea>
         </div>
 
         <div class="mb-3">
             <label  class="form-label">Post Creator</label>
-            <select name="post_creator" class="form-control">
+            <select name="post_creator" class="form-control" required>
                 @foreach($users as $user)
                     <option value="{{$user->id}}">{{$user->name}}</option>
                 @endforeach

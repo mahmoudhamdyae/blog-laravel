@@ -45,6 +45,14 @@ class PostController extends Controller
     }
 
     function store(Request $request) {
+
+        // Validate the request data
+        request()->validate([
+            'title' => 'required|max:255',
+            'description' => 'required',
+            'post_creator' => 'required|exists:users,id',
+        ]);
+
         // $data = $_POST;
 
         // $data = request()->all();
