@@ -48,7 +48,7 @@ class PostController extends Controller
 
         // Validate the request data
         request()->validate([
-            'title' => 'required|max:255',
+            'title' => 'required|max:255|min:3',
             'description' => 'required',
             'post_creator' => 'required|exists:users,id',
         ]);
@@ -90,6 +90,12 @@ class PostController extends Controller
     }
 
     function update(Request $request, $postId) {
+         request()->validate([
+            'title' => 'required|max:255|min:3',
+            'description' => 'required',
+            'post_creator' => 'required|exists:users,id',
+        ]);
+        
         $singlePostFromDb = Post::findOrFail($postId);
 
         $id = request()->id;
