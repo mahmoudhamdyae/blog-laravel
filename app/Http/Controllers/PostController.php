@@ -62,7 +62,7 @@ class PostController extends Controller
         $desc = request()->description;
         $post_creator = request()->post_creator;
 
-        // First Way
+        // First Way // No need for fillable
         // $post = new Post;
         // $post->title = $title;
         // $post->description = $desc;
@@ -70,12 +70,17 @@ class PostController extends Controller
         // $post->save(); // insert into posts (title, description) values (...)
 
         // Second Way
-        Post::create([
-            'title' => $title,
-            'description' => $desc,
-            'user_id' => $post_creator,
-            'xyz' => 'some value' // will be ignored due to $fillable in Post model
-        ]);
+        // Post::create([
+        //     'title' => $title,
+        //     'description' => $desc,
+        //     'user_id' => $post_creator,
+        //     'xyz' => 'some value' // will be ignored due to $fillable in Post model
+        // ]);
+
+        // $data = request()->all();
+        // Post::create($data);
+
+        Post::create(request()->all());
 
         // Validate and store the post data
         // For now, just redirect back to the posts index
@@ -95,7 +100,7 @@ class PostController extends Controller
             'description' => 'required',
             'post_creator' => 'required|exists:users,id',
         ]);
-        
+
         $singlePostFromDb = Post::findOrFail($postId);
 
         $id = request()->id;
