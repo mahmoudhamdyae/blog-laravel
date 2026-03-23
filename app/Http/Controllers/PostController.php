@@ -50,7 +50,7 @@ class PostController extends Controller
         request()->validate([
             'title' => 'required|max:255|min:3',
             'description' => 'required',
-            'post_creator' => 'required|exists:users,id',
+            'user_id' => 'required|exists:users,id',
         ]);
 
         // $data = $_POST;
@@ -60,7 +60,7 @@ class PostController extends Controller
 
         $title = request()->title;
         $desc = request()->description;
-        $post_creator = request()->post_creator;
+        $user_id = request()->user_id;
 
         // First Way // No need for fillable
         // $post = new Post;
