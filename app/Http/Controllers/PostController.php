@@ -14,7 +14,8 @@ class PostController extends Controller
         //     ['id' => 1, 'title' => 'First Post', 'desc' => 'First Desc', 'posted_by' => 'Admin', 'created_at' => '2024-01-01'],
         //     ['id' => 2, 'title' => 'Second Post', 'desc' => 'Second Desc', 'posted_by' => 'Editor', 'created_at' => '2024-02-01'],
         // ];
-        $postsFromDB = Post::all(); // collection object
+        // $postsFromDB = Post::all(); // collection object
+        $postsFromDB = Post::paginate(10);
         // dd($postsFromDB);
         return view('posts.index', ['posts' => $postsFromDB]);
     }

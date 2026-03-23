@@ -65,6 +65,15 @@
   </div>
 </div>
 
+{{-- Pagination --}}
+{{-- <div class="d-flex justify-content-center mt-3">
+    {{ $posts->links('pagination::bootstrap-5') }}
+</div> --}}
+
+<div class="d-flex justify-content-center mt-3">
+     {{ $posts->links() }}
+</div>
+
 @endsection
 
 @section('scripts')
