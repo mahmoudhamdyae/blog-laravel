@@ -21,7 +21,8 @@
   <div class="card-body">
     <h5 class="card-title">Name: {{ $post-> user ? $post->user->name : 'not_found' }}</h5>
     <p class="card-text">Email: {{ $post-> user ? $post->user->email : 'not_found' }}</p>
-    <p class="card-text">Created At: {{ $post-> user ? $post->user->created_at->diffForHumans() : 'not_found' }}.</p>
+    {{-- <p class="card-text">Created At: {{ $post-> user ? $post->user->created_at->diffForHumans() : 'not_found' }}.</p> --}}
+    <p class="card-text">Created At: {{ $post-> user ? $post->humanReadableDate : 'not_found' }}.</p>
   </div>
 </div>
 

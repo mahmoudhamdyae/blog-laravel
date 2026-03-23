@@ -29,7 +29,8 @@
       <td>{{ $post->title }}</td>
       {{-- @dd($post->user, $post->post()->where('id', $post->user_id)->first()) --}}
       <td>{{ $post->user ? $post->user->name : 'not_found'}}</td>
-      <td>{{ $post->created_at->addDays(35)->format('Y-m-d') }}</td>
+      {{-- <td>{{ $post->created_at->format('Y-m-d') }}</td> --}}
+      <td>{{ $post->humanReadableDate }}</td>
       <td>
         <div>
             <a href="{{ route('posts.show', $post->id) }}" class="btn btn-info">View</a>
