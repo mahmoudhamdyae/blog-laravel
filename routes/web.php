@@ -31,3 +31,6 @@ Route::delete('/posts/{post}', [PostController::class, 'destroy']) -> name('post
 Route::post('/posts/{post}/comments', [CommentController::class, 'store']) -> name('comments.store');
 Route::delete('/comments/{comment}', [CommentController::class, 'destroy']) -> name('comments.destroy');
 
+Route::get('/posts/{post}/json', [PostController::class, 'getPostData']) -> name('posts.json');
+
+

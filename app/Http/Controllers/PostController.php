@@ -129,4 +129,14 @@ class PostController extends Controller
 
         return redirect()->route('posts.index');
     }
+
+    function getPostData(Post $post)
+    {
+        return response()->json([
+            'title' => $post->title,
+            'description' => $post->description,
+            'user_name' => $post->user ? $post->user->name : 'not_found',
+            'user_email' => $post->user ? $post->user->email : 'not_found',
+        ]);
+    }
 }
