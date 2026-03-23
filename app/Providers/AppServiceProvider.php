@@ -3,6 +3,7 @@
 namespace App\Providers;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -24,5 +25,11 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
         Paginator::useBootstrapFive();
+
+        Relation::morphMap([
+        'post' => \App\Models\Post::class,
+        'comment' => \App\Models\Comment::class,
+        'user' => \App\Models\User::class,
+    ]);
     }
 }

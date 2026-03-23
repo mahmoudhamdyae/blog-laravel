@@ -36,7 +36,8 @@ class PostController extends Controller
         // $singlePostFromDb = Post::where('id', $postId)->get();
 
         // return view('posts.show', ['post' => $singlePostFromDb]);
-        return view('posts.show', ['post' => $post]);
+        $comments = $post->comments()->paginate(5);
+        return view('posts.show', ['post' => $post, 'comments' => $comments]);
 
     }
 
@@ -123,6 +124,7 @@ class PostController extends Controller
 
         // Post::where('id', $postId)->delete();
         $post = Post::findOrFail($postId);
+        // $post->comments()->delete(); // مسح التعليقات أولاً
         $post->delete();
 
         return redirect()->route('posts.index');

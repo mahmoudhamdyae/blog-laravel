@@ -20,4 +20,17 @@ class Post extends Model
     // public function postCreator() {
     //     return $this->belongsTo(User::class, 'user_id');
     // }
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    protected static function booted()
+{
+    static::deleting(function ($post) {
+        // سيتم تنفيذ هذا الكود تلقائياً قبل حذف أي بوست
+        $post->comments()->delete();
+    });
 }
+}
+
