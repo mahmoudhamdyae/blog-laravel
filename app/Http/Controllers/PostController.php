@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use App\Models\User;
 use Hamcrest\Core\IsNull;
@@ -46,14 +47,28 @@ class PostController extends Controller
         return view('posts.create', ['users' => $users]);
     }
 
-    function store(Request $request) {
+    function store(
+        // Request
+        StorePostRequest
+        $request) {
 
         // Validate the request data
-        request()->validate([
-            'title' => 'required|max:255|min:3',
-            'description' => 'required',
-            'user_id' => 'required|exists:users,id',
-        ]);
+        // request()->validate([
+        //     'title' => 'required|max:255|min:3',
+        //     'description' => 'required',
+        //     'user_id' => 'required|exists:users,id',
+        // ],
+        // [
+        //     'title.required' => 'Please enter a title',
+        //     'title.max' => 'Title must be at most 255 characters',
+        //     'title.min' => 'Title must be at least 3 characters',
+        //     'description.required' => 'Please enter a description',
+        //     'post_creator.required' => 'Please select a post creator',
+        //     'post_creator.exists' => 'Please select a valid post creator',
+        // ]
+        // );
+
+
 
         // $data = $_POST;
 
@@ -96,12 +111,25 @@ class PostController extends Controller
         return view('posts.edit', ['post' => $post, 'users' => $users]);
     }
 
-    function update(Request $request, $postId) {
-         request()->validate([
-            'title' => 'required|max:255|min:3',
-            'description' => 'required',
-            'post_creator' => 'required|exists:users,id',
-        ]);
+    function update(
+        // Request
+        StorePostRequest
+         $request, $postId) {
+
+    //      request()->validate([
+    //         'title' => 'required|max:255|min:3',
+    //         'description' => 'required',
+    //         'post_creator' => 'required|exists:users,id',
+    //     ],
+    //     [
+    //         'title.required' => 'Please enter a title',
+    //         'title.max' => 'Title must be at most 255 characters',
+    //         'title.min' => 'Title must be at least 3 characters',
+    //         'description.required' => 'Please enter a description',
+    //         'post_creator.required' => 'Please select a post creator',
+    //         'post_creator.exists' => 'Please select a valid post creator',
+    //     ]
+    // );
 
         $singlePostFromDb = Post::findOrFail($postId);
 
