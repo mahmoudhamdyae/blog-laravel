@@ -20,6 +20,7 @@ class PostFactory extends Factory
             'title' => $this->faker->sentence(),
             'description' => $this->faker->paragraph(),
             'user_id' => $this->faker->numberBetween(1, 50),
+            // 'image' => $this->faker->imageUrl(640, 480, 'posts', true),
             'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
             'updated_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];

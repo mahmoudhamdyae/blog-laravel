@@ -13,7 +13,7 @@ class Post extends Model
 {
 
     use HasFactory, SoftDeletes, Sluggable;
-    protected $fillable = ['title', 'description', 'user_id'];
+    protected $fillable = ['title', 'description', 'user_id', 'image'];
 
     public function user() { // SAME: return foreign key
         return $this->belongsTo(User::class);

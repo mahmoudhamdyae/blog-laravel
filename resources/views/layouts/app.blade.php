@@ -90,7 +90,7 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-4 container">
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>

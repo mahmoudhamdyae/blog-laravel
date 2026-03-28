@@ -18,6 +18,7 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Title</th>
+                <th scope="col">Image</th>
                 <th scope="col">Posted By</th>
                 <th scope="col">Created At</th>
                 <th scope="col">Actions</th>
@@ -29,6 +30,17 @@
                 <tr>
                     <th scope="row">{{ $post->id }}</th>
                     <td>{{ $post->title }}</td>
+                    <td>
+                        @if ($post->image)
+                            @if (Str::startsWith($post->image, ['http://', 'https://']))
+                                <img src="{{ $post->image }}" alt="Post Image" style="width: 50px; height: 50px; object-fit: cover;">
+                            @else
+                                <img src="{{ Storage::url($post->image) }}" alt="Post Image" style="width: 50px; height: 50px; object-fit: cover;">
+                            @endif
+                        @else
+                            <span>No Image</span>
+                        @endif
+                    </td>
                     {{-- @dd($post->user, $post->post()->where('id', $post->user_id)->first()) --}}
                     <td>{{ $post->user ? $post->user->name : 'not_found' }}</td>
                     {{-- <td>{{ $post->created_at->format('Y-m-d') }}</td> --}}

@@ -25,6 +25,7 @@ class StorePostRequest extends FormRequest
             'title' => 'required|max:255|min:3',
             'description' => 'required',
             'post_creator' => 'required|exists:users,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 
@@ -37,6 +38,9 @@ class StorePostRequest extends FormRequest
             'description.required' => 'Please enter a description',
             'post_creator.required' => 'Please select a post creator',
             'post_creator.exists' => 'Please select a valid post creator',
+            'image.image' => 'The uploaded file must be an image',
+            'image.mimes' => 'Allowed image formats are: jpeg, png, jpg, gif, svg',
+            'image.max' => 'The image size must not exceed 2048 KB',
         ];
     }
 }

@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\User;
 use Hamcrest\Core\IsNull;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -97,7 +98,20 @@ class PostController extends Controller
         // $data = request()->all();
         // Post::create($data);
 
-        Post::create(request()->all());
+        $data = $request->validated();
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('posts', 'public');
+            $data['image'] = $path;
+        }
+
+        Post::create([
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'user_id' => $data['post_creator'],
+            'image' => $data['image'] ?? null,
+        ]);
+        // Post::create(request()->all());
 
         // Validate and store the post data
         // For now, just redirect back to the posts index
@@ -138,10 +152,23 @@ class PostController extends Controller
         $desc = request()->description;
         $post_creator = request()->post_creator;
 
-        $singlePostFromDb->update([
+        $data = $request->validated();
+        $post = Post::findOrFail($postId);
+
+        if ($request->hasFile('image')) {
+            // Delete old image
+            if ($post->image) {
+                Storage::disk('public')->delete($post->image);
+            }
+            $path = $request->file('image')->store('posts', 'public');
+            $data['image'] = $path;
+        }
+
+        $post->update([
             'title' => $title,
             'description' => $desc,
             'user_id' => $post_creator,
+            'image' => $data['image'] ?? $post->image,
         ]);
 
         return redirect()->route('posts.show', $postId);
@@ -153,6 +180,12 @@ class PostController extends Controller
         // Post::where('id', $postId)->delete();
         $post = Post::findOrFail($postId);
         // $post->comments()->delete(); // مسح التعليقات أولاً
+
+        // Delete image file if exists
+        if ($post->image) {
+            Storage::disk('public')->delete($post->image);
+        }
+
         $post->delete();
 
         return redirect()->route('posts.index');
