@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Post;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StorePostRequest extends FormRequest
@@ -21,10 +22,18 @@ class StorePostRequest extends FormRequest
      */
     public function rules(): array
     {
+        $postId = $this->route('post') instanceof Post 
+            ? $this->route('post')->id 
+            : $this->route('post');
+
         return [
             'title' => 'required|max:255|min:3',
             'description' => 'required',
-            'post_creator' => 'required|exists:users,id',
+            'post_creator' => [
+                'required', 
+                'exists:users,id',
+                new \App\Rules\MaxPostsRule($postId)
+            ],
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
