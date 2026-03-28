@@ -24,6 +24,12 @@
                     @endif
                 </div>
             @endif
+
+            <div class="mt-3">
+                @foreach ($post->tags as $tag)
+                    <span class="badge bg-primary">{{ $tag->name }}</span>
+                @endforeach
+            </div>
         </div>
     </div>
 

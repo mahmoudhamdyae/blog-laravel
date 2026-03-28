@@ -46,6 +46,11 @@
             @endif
         </div>
 
+        <div class="mb-3">
+            <label class="form-label">Tags (comma separated)</label>
+            <input name="tags" type="text" class="form-control" value="{{ old('tags', $post->tags->pluck('name')->implode(', ')) }}" placeholder="e.g. laravel, coding, web">
+        </div>
+
         <button class="btn btn-primary">Update</button>
     </form>
 

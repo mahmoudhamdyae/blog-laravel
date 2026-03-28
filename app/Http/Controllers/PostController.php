@@ -105,12 +105,17 @@ class PostController extends Controller
             $data['image'] = $path;
         }
 
-        Post::create([
+        $post = Post::create([
             'title' => $data['title'],
             'description' => $data['description'],
             'user_id' => $data['post_creator'],
             'image' => $data['image'] ?? null,
         ]);
+
+        if (!empty($data['tags'])) {
+            $tags = array_map('trim', explode(',', $data['tags']));
+            $post->attachTags($tags);
+        }
         // Post::create(request()->all());
 
         // Validate and store the post data
@@ -170,6 +175,11 @@ class PostController extends Controller
             'user_id' => $post_creator,
             'image' => $data['image'] ?? $post->image,
         ]);
+
+        if (isset($data['tags'])) {
+            $tags = array_map('trim', explode(',', $data['tags']));
+            $post->syncTags($tags);
+        }
 
         return redirect()->route('posts.show', $postId);
     }

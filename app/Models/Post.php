@@ -8,11 +8,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Spatie\Tags\HasTags;
 
 class Post extends Model
 {
 
-    use HasFactory, SoftDeletes, Sluggable;
+    use HasFactory, SoftDeletes, Sluggable, HasTags;
     protected $fillable = ['title', 'description', 'user_id', 'image'];
 
     public function user() { // SAME: return foreign key

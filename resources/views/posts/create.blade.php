@@ -29,6 +29,10 @@
             <label class="form-label">Post Image</label>
             <input name="image" type="file" class="form-control">
         </div>
+        <div class="mb-3">
+            <label class="form-label">Tags (comma separated)</label>
+            <input name="tags" type="text" class="form-control" value="{{ old('tags') }}" placeholder="e.g. laravel, coding, web">
+        </div>
 
         <button class="btn btn-success">Submit</button>
     </form>

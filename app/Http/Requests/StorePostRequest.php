@@ -35,6 +35,7 @@ class StorePostRequest extends FormRequest
                 new \App\Rules\MaxPostsRule($postId)
             ],
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'tags' => 'nullable|string|max:255',
         ];
     }
 
@@ -50,6 +51,7 @@ class StorePostRequest extends FormRequest
             'image.image' => 'The uploaded file must be an image',
             'image.mimes' => 'Allowed image formats are: jpeg, png, jpg, gif, svg',
             'image.max' => 'The image size must not exceed 2048 KB',
+            'tags.string' => 'Tags must be a string of comma separated values',
         ];
     }
 }
