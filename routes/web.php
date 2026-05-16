@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\TestController;
 use App\Http\Controllers\CommentController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,25 +32,32 @@ Route::get('/hello', [TestController::class, 'greet']);
 Route::middleware(['auth'])
 // ->prefix('admin')      // كل الروابط ستبدأ بـ admin/
 // ->name('admin.')       // كل أسماء الروابط ستبدأ بـ admin.
-->group(function() {
-     Route::get('/posts', [PostController::class, 'index']) -> name('posts.index');
-     Route::get('/posts/create', [PostController::class, 'create']) -> name('posts.create');
-     Route::get('/posts/{post}', [PostController::class, 'show']) -> name('posts.show');
-     Route::post('/posts', [PostController::class, 'store']) -> name('posts.store');
-     Route::get('/posts/{post}/edit', [PostController::class, 'edit']) -> name('posts.edit');
-     Route::put('/posts/{post}', [PostController::class, 'update']) -> name('posts.update');
-     Route::delete('/posts/{post}', [PostController::class, 'destroy']) -> name('posts.destroy');
+    ->group(function () {
+        Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+        Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+        Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+        Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+        Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
+        Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
+        Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
     }
-);
+    );
 
 // Comments
-Route::post('/posts/{post}/comments', [CommentController::class, 'store']) -> name('comments.store')->middleware('auth');
-Route::delete('/comments/{comment}', [CommentController::class, 'destroy']) -> name('comments.destroy')->middleware('auth');
+Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store')->middleware('auth');
+Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy')->middleware('auth');
 
-Route::get('/posts/{post}/json', [PostController::class, 'getPostData']) -> name('posts.json')->middleware('auth');
+Route::get('/posts/{post}/json', [PostController::class, 'getPostData'])->name('posts.json')->middleware('auth');
 
-
+// 301 Moved Permanently
+Route::redirect('/here', '/there');
+Route::redirect('/here', '/there', 302);
+// 302 Found
+Route::permanentRedirect('/here1', '/there1');
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// API Routes
+// Route::prefix('api')->group(base_path('routes/api.php'));
