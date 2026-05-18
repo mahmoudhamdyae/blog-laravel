@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TestController;
@@ -61,3 +62,13 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 // API Routes
 // Route::prefix('api')->group(base_path('routes/api.php'));
+
+// OAuth Routes
+Route::middleware('guest')->group(function () {
+    Route::get('/auth/redirect/{provider}', [SocialiteController::class, 'redirectToProvider'])->name('auth.redirect');
+    Route::get('/auth/callback/{provider}', [SocialiteController::class, 'handleProviderCallback'])->name('auth.callback');
+
+    // Default routes for backwards compatibility
+    Route::get('/auth/redirect', [SocialiteController::class, 'redirectToProvider'])->defaults('provider', 'github');
+    Route::get('/auth/callback', [SocialiteController::class, 'handleProviderCallback'])->defaults('provider', 'github');
+});

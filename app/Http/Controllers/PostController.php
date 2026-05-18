@@ -5,28 +5,30 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use App\Models\User;
-use Hamcrest\Core\IsNull;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
-    function index() {
+    public function index()
+    {
         // $allPosts = [
         //     ['id' => 1, 'title' => 'First Post', 'desc' => 'First Desc', 'posted_by' => 'Admin', 'created_at' => '2024-01-01'],
         //     ['id' => 2, 'title' => 'Second Post', 'desc' => 'Second Desc', 'posted_by' => 'Editor', 'created_at' => '2024-02-01'],
         // ];
         // $postsFromDB = Post::all(); // collection object
-        $postsFromDB = Post::paginate(10);
+        $postsFromDB = Post::with('user')->paginate(10);
+
         // dd($postsFromDB);
         return view('posts.index', ['posts' => $postsFromDB]);
     }
 
     // function show($postId) {
-    function show(Post $post) {
+    public function show(Post $post)
+    {
         // $singlePost = ['id' => 1, 'title' => 'First Post', 'desc' => 'First Desc', 'posted_by' => 'Admin', 'created_at' => '2024-01-01'];
 
-          // $singlePostFromDb = Post::find($postId);
+        // $singlePostFromDb = Post::find($postId);
         // if (is_null($singlePostFromDb)) {
         //     // return abort(404);
         //     return to_route('posts.index');
@@ -38,17 +40,21 @@ class PostController extends Controller
         // $singlePostFromDb = Post::where('id', $postId)->get();
 
         // return view('posts.show', ['post' => $singlePostFromDb]);
+        $post->load(['user', 'tags']);
         $comments = $post->comments()->paginate(5);
+
         return view('posts.show', ['post' => $post, 'comments' => $comments]);
 
     }
 
-    function create() {
+    public function create()
+    {
         $users = User::all();
+
         return view('posts.create', ['users' => $users]);
     }
 
-    function store(
+    public function store(
         // Request
         StorePostRequest
         $request) {
@@ -112,7 +118,7 @@ class PostController extends Controller
             'image' => $data['image'] ?? null,
         ]);
 
-        if (!empty($data['tags'])) {
+        if (! empty($data['tags'])) {
             $tags = array_map('trim', explode(',', $data['tags']));
             $post->attachTags($tags);
         }
@@ -124,31 +130,33 @@ class PostController extends Controller
     }
 
     // function edit($postId) {
-    function edit(Post $post) {
+    public function edit(Post $post)
+    {
         // $singlePost = ['id' => 3, 'title' => 'First Post', 'desc' => 'First Desc', 'posted_by' => 'Admin', 'created_at' => '2024-01-01'];
         $users = User::all();
+
         return view('posts.edit', ['post' => $post, 'users' => $users]);
     }
 
-    function update(
+    public function update(
         // Request
-        StorePostRequest
-         $request, $postId) {
+        StorePostRequest $request, $postId)
+    {
 
-    //      request()->validate([
-    //         'title' => 'required|max:255|min:3',
-    //         'description' => 'required',
-    //         'post_creator' => 'required|exists:users,id',
-    //     ],
-    //     [
-    //         'title.required' => 'Please enter a title',
-    //         'title.max' => 'Title must be at most 255 characters',
-    //         'title.min' => 'Title must be at least 3 characters',
-    //         'description.required' => 'Please enter a description',
-    //         'post_creator.required' => 'Please select a post creator',
-    //         'post_creator.exists' => 'Please select a valid post creator',
-    //     ]
-    // );
+        //      request()->validate([
+        //         'title' => 'required|max:255|min:3',
+        //         'description' => 'required',
+        //         'post_creator' => 'required|exists:users,id',
+        //     ],
+        //     [
+        //         'title.required' => 'Please enter a title',
+        //         'title.max' => 'Title must be at most 255 characters',
+        //         'title.min' => 'Title must be at least 3 characters',
+        //         'description.required' => 'Please enter a description',
+        //         'post_creator.required' => 'Please select a post creator',
+        //         'post_creator.exists' => 'Please select a valid post creator',
+        //     ]
+        // );
 
         $singlePostFromDb = Post::findOrFail($postId);
 
@@ -184,7 +192,8 @@ class PostController extends Controller
         return redirect()->route('posts.show', $postId);
     }
 
-    function destroy($postId) {
+    public function destroy($postId)
+    {
         // $post->delete();
 
         // Post::where('id', $postId)->delete();
@@ -201,7 +210,7 @@ class PostController extends Controller
         return redirect()->route('posts.index');
     }
 
-    function getPostData(Post $post)
+    public function getPostData(Post $post)
     {
         return response()->json([
             'title' => $post->title,
