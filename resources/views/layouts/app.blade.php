@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
 
 <head>
     <meta charset="utf-8">
@@ -12,9 +12,19 @@
 
     <title>{{ config('app.name', 'Blog Post') }}</title>
 
-    <!-- Fonts -->
+    <!-- Fonts & Bootstrap RTL Support -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    @if(app()->getLocale() === 'ar')
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" integrity="sha384-dpuaG1suU0eT09tx5plTaGMLBsfDLzUCCUXOY2j/LSvXYuG6Bqs43ALlhIqAJVRb" crossorigin="anonymous">
+        <style>
+            body {
+                font-family: 'Cairo', sans-serif !important;
+            }
+        </style>
+    @else
+        <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    @endif
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -34,7 +44,7 @@
                     <ul class="navbar-nav pe-md-5">
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{{ route('posts.index') }}"
-                                style="padding-top: 10px;">All Posts</a>
+                                style="padding-top: 10px;">{{ __('All Posts') }}</a>
                         </li>
                     </ul>
                 </div>
@@ -51,7 +61,25 @@
                     </ul>
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        <!-- Language Switcher -->
+                        <li class="nav-item dropdown me-3">
+                            <a id="langDropdown" class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <span class="me-1">🌐</span> {{ app()->getLocale() === 'ar' ? 'العربية' : 'English' }}
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="langDropdown">
+                                <a class="dropdown-item d-flex align-items-center justify-content-between" href="{{ route('lang.switch', 'en') }}">
+                                    <span>🇺🇸 English</span>
+                                    @if(app()->getLocale() === 'en') <small class="text-success">✓</small> @endif
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center justify-content-between" href="{{ route('lang.switch', 'ar') }}">
+                                    <span>🇸🇦 العربية</span>
+                                    @if(app()->getLocale() === 'ar') <small class="text-success">✓</small> @endif
+                                </a>
+                            </div>
+                        </li>
+
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))

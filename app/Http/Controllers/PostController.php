@@ -56,8 +56,8 @@ class PostController extends Controller
 
     public function store(
         // Request
-        StorePostRequest
-        $request) {
+        StorePostRequest $request)
+    {
 
         // Validate the request data
         // request()->validate([
@@ -74,8 +74,6 @@ class PostController extends Controller
         //     'post_creator.exists' => 'Please select a valid post creator',
         // ]
         // );
-
-
 
         // $data = $_POST;
 
@@ -113,7 +111,9 @@ class PostController extends Controller
 
         $post = Post::create([
             'title' => $data['title'],
+            'title_ar' => $data['title_ar'] ?? null,
             'description' => $data['description'],
+            'description_ar' => $data['description_ar'] ?? null,
             'user_id' => $data['post_creator'],
             'image' => $data['image'] ?? null,
         ]);
@@ -178,9 +178,11 @@ class PostController extends Controller
         }
 
         $post->update([
-            'title' => $title,
-            'description' => $desc,
-            'user_id' => $post_creator,
+            'title' => $data['title'],
+            'title_ar' => $data['title_ar'] ?? null,
+            'description' => $data['description'],
+            'description_ar' => $data['description_ar'] ?? null,
+            'user_id' => $data['post_creator'],
             'image' => $data['image'] ?? $post->image,
         ]);
 

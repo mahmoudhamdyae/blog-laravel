@@ -15,6 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'adminOnly' => \App\Http\Middleware\AdminOnlyMiddleware::class,
         ]);
+
+        $middleware->appendToGroup('web', \App\Http\Middleware\SetLocaleMiddleware::class);
+        $middleware->appendToGroup('api', \App\Http\Middleware\SetLocaleMiddleware::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

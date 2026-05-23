@@ -22,17 +22,19 @@ class StorePostRequest extends FormRequest
      */
     public function rules(): array
     {
-        $postId = $this->route('post') instanceof Post 
-            ? $this->route('post')->id 
+        $postId = $this->route('post') instanceof Post
+            ? $this->route('post')->id
             : $this->route('post');
 
         return [
             'title' => 'required|max:255|min:3',
+            'title_ar' => 'nullable|max:255|min:3',
             'description' => 'required',
+            'description_ar' => 'nullable',
             'post_creator' => [
-                'required', 
+                'required',
                 'exists:users,id',
-                new \App\Rules\MaxPostsRule($postId)
+                new \App\Rules\MaxPostsRule($postId),
             ],
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'tags' => 'nullable|string|max:255',
@@ -42,16 +44,18 @@ class StorePostRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'title.required' => 'Please enter a title',
-            'title.max' => 'Title must be at most 255 characters',
-            'title.min' => 'Title must be at least 3 characters',
-            'description.required' => 'Please enter a description',
-            'post_creator.required' => 'Please select a post creator',
-            'post_creator.exists' => 'Please select a valid post creator',
-            'image.image' => 'The uploaded file must be an image',
-            'image.mimes' => 'Allowed image formats are: jpeg, png, jpg, gif, svg',
-            'image.max' => 'The image size must not exceed 2048 KB',
-            'tags.string' => 'Tags must be a string of comma separated values',
+            'title.required' => __('Please enter a title'),
+            'title.max' => __('Title must be at most 255 characters'),
+            'title.min' => __('Title must be at least 3 characters'),
+            'title_ar.max' => __('Title must be at most 255 characters'),
+            'title_ar.min' => __('Title must be at least 3 characters'),
+            'description.required' => __('Please enter a description'),
+            'post_creator.required' => __('Please select a post creator'),
+            'post_creator.exists' => __('Please select a valid post creator'),
+            'image.image' => __('The uploaded file must be an image'),
+            'image.mimes' => __('Allowed image formats are: jpeg, png, jpg, gif, svg'),
+            'image.max' => __('The image size must not exceed 2048 KB'),
+            'tags.string' => __('Tags must be a string of comma separated values'),
         ];
     }
 }

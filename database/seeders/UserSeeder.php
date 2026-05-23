@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
 {
@@ -12,6 +12,19 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(50)->create();
+        // Create a fixed admin user for easy login
+        User::factory()->create([
+            'name' => 'Admin User',
+            'email' => 'admin@admin.com',
+            'password' => \Illuminate\Support\Facades\Hash::make('password'),
+        ]);
+
+         User::factory()->create([
+            'name' => 'Mahmoud Hamdy',
+            'email' => 'mahmoudhamdyae@gmail.com',
+            'password' => \Illuminate\Support\Facades\Hash::make('Ishidauryu2&'),
+        ]);
+
+        User::factory(49)->create();
     }
 }

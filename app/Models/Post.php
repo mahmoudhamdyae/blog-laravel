@@ -2,21 +2,48 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Carbon\Carbon;
-use Cviebrock\EloquentSluggable\Sluggable;
 use Spatie\Tags\HasTags;
 
 class Post extends Model
 {
+    use HasFactory, HasTags, Sluggable, SoftDeletes;
 
-    use HasFactory, SoftDeletes, Sluggable, HasTags;
-    protected $fillable = ['title', 'description', 'user_id', 'image'];
+    protected $fillable = ['title', 'title_ar', 'description', 'description_ar', 'user_id', 'image'];
 
-    public function user() { // SAME: return foreign key
+    protected function title(): Attribute
+    {
+        return Attribute::make(
+            get: function (?string $value, array $attributes) {
+                if (app()->getLocale() === 'ar' && ! empty($attributes['title_ar'])) {
+                    return $attributes['title_ar'];
+                }
+
+                return $value;
+            }
+        );
+    }
+
+    protected function description(): Attribute
+    {
+        return Attribute::make(
+            get: function (?string $value, array $attributes) {
+                if (app()->getLocale() === 'ar' && ! empty($attributes['description_ar'])) {
+                    return $attributes['description_ar'];
+                }
+
+                return $value;
+            }
+        );
+    }
+
+    public function user() // SAME: return foreign key
+    {
         return $this->belongsTo(User::class);
     }
 
@@ -29,7 +56,8 @@ class Post extends Model
         return $this->morphMany(Comment::class, 'commentable');
     }
 
-    protected static function booted() {
+    protected static function booted()
+    {
         static::deleting(function ($post) {
             // سيتم تنفيذ هذا الكود تلقائياً قبل حذف أي بوست
             $post->comments()->delete();
@@ -39,23 +67,19 @@ class Post extends Model
     protected function humanReadableDate(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value, array $attributes) =>
-                Carbon::parse($attributes['created_at'])->diffForHumans(),
+            get: fn (mixed $value, array $attributes) => Carbon::parse($attributes['created_at'])->diffForHumans(),
         );
     }
 
     /**
      * Return the sluggable configuration array for this model.
-     *
-     * @return array
      */
     public function sluggable(): array
     {
         return [
             'slug' => [
-                'source' => 'title'
-            ]
+                'source' => 'title',
+            ],
         ];
     }
 }
-

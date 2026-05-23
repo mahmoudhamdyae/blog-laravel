@@ -1,18 +1,18 @@
 @extends('layouts.app')
 
 @section('title')
-    Post Details
+    {{ __('Post Details') }}
 @endsection
 
 @section('content')
 
     <div class="card m-4">
         <div class="card-header">
-            Post Info
+            {{ __('Post Info') }}
         </div>
         <div class="card-body">
-            <h5 class="card-title">Title: {{ $post->title }}</h5>
-            <p class="card-text">Description: {{ $post->description }}</p>
+            <h5 class="card-title">{{ __('Title') }}: {{ $post->title }}</h5>
+            <p class="card-text">{{ __('Description') }}: {{ $post->description }}</p>
             @if ($post->image)
                 <div class="mt-3 text-center">
                     @if (Str::startsWith($post->image, ['http://', 'https://']))
@@ -35,24 +35,24 @@
 
     <div class="card m-4">
         <div class="card-header">
-            Post Creator Info
+            {{ __('Creator Info') }}
         </div>
         <div class="card-body">
-            <h5 class="card-title">Name: {{ $post->user ? $post->user->name : 'not_found' }}</h5>
-            <p class="card-text">Email: {{ $post->user ? $post->user->email : 'not_found' }}</p>
+            <h5 class="card-title">{{ __('Name') }}: {{ $post->user ? $post->user->name : 'not_found' }}</h5>
+            <p class="card-text">{{ __('Email') }}: {{ $post->user ? $post->user->email : 'not_found' }}</p>
             {{-- <p class="card-text">Created At: {{ $post-> user ? $post->user->created_at->diffForHumans() : 'not_found' }}.</p> --}}
-            <p class="card-text">Created At: {{ $post->user ? $post->humanReadableDate : 'not_found' }}.</p>
+            <p class="card-text">{{ __('Created At') }}: {{ $post->user ? $post->humanReadableDate : 'not_found' }}.</p>
         </div>
     </div>
 
     <div class="card m-4">
         <div class="card-header d-flex justify-content-between align-items-center">
             <span>
-                Comments
+                {{ __('Comments') }}
                 <span class="badge bg-secondary ms-1">{{ $post->comments()->count() }}</span>
             </span>
             <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addCommentModal">
-                Add Comment
+                {{ __('Add Comment') }}
             </button>
         </div>
         <div class="card-body">
@@ -61,11 +61,11 @@
                     <p class="mb-0">{{ $comment->body }}</p>
                     <button class="btn btn-sm btn-danger ms-3" data-bs-toggle="modal" data-bs-target="#deleteCommentModal"
                         data-comment-id="{{ $comment->id }}">
-                        Delete
+                        {{ __('Delete') }}
                     </button>
                 </div>
             @empty
-                <p class="text-muted mb-0">No comments yet.</p>
+                <p class="text-muted mb-0">{{ __('No comments yet.') }}</p>
             @endforelse
 
             <div class="mt-3">
@@ -79,20 +79,20 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addCommentLabel">Add Comment</h5>
+                    <h5 class="modal-title" id="addCommentLabel">{{ __('Add Comment') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form method="POST" action="{{ route('comments.store', $post->id) }}">
                     @csrf
                     <div class="modal-body">
-                        <textarea name="body" class="form-control" rows="4" placeholder="Write your comment..."></textarea>
+                        <textarea name="body" class="form-control" rows="4" placeholder="{{ __('Write your comment...') }}"></textarea>
                         @error('body')
                             <div class="text-danger mt-1">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-success">Submit</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                        <button type="submit" class="btn btn-success">{{ __('Submit') }}</button>
                     </div>
                 </form>
             </div>
@@ -104,18 +104,18 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title" id="deleteCommentLabel">Delete Comment</h5>
+                    <h5 class="modal-title" id="deleteCommentLabel">{{ __('Delete Comment') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete this comment?
+                    {{ __('Are you sure you want to delete this comment?') }}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
                     <form id="deleteCommentForm" method="POST" action="">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-danger">{{ __('Delete') }}</button>
                     </form>
                 </div>
             </div>

@@ -7,6 +7,14 @@ use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+Route::get('lang/{locale}', function (string $locale) {
+    if (in_array($locale, ['en', 'ar'])) {
+        session()->put('locale', $locale);
+    }
+
+    return redirect()->back();
+})->name('lang.switch');
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -71,4 +79,10 @@ Route::middleware('guest')->group(function () {
     // Default routes for backwards compatibility
     Route::get('/auth/redirect', [SocialiteController::class, 'redirectToProvider'])->defaults('provider', 'github');
     Route::get('/auth/callback', [SocialiteController::class, 'handleProviderCallback'])->defaults('provider', 'github');
+});
+
+Route::get('/lang/{lang}', function (string $lang) {
+    // app()->setLocale($lang);
+    session()->put('locale', $lang);
+    return redirect()->back();
 });

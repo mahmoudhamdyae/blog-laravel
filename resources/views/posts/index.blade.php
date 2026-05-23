@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
 @section('title')
-    Posts
+    {{ __('All Posts') }}
 @endsection
 
 @section('content')
     {{-- Create Post Button --}}
 
     <div class="mt-4 text-center">
-        <a href="{{ route('posts.create') }}" class="btn btn-success">Create Post</a>
+        <a href="{{ route('posts.create') }}" class="btn btn-success">{{ __('Create Post') }}</a>
     </div>
 
     {{-- Table --}}
@@ -17,11 +17,11 @@
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Title</th>
-                <th scope="col">Image</th>
-                <th scope="col">Posted By</th>
-                <th scope="col">Created At</th>
-                <th scope="col">Actions</th>
+                <th scope="col">{{ __('Title') }}</th>
+                <th scope="col">{{ __('Image') }}</th>
+                <th scope="col">{{ __('Posted By') }}</th>
+                <th scope="col">{{ __('Created At') }}</th>
+                <th scope="col">{{ __('Actions') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -31,15 +31,15 @@
                     <th scope="row">{{ $post->id }}</th>
                     <td>{{ $post->title }}</td>
                     <td>
-                        @if ($post->image)
-                            @if (Str::startsWith($post->image, ['http://', 'https://']))
-                                <img src="{{ $post->image }}" alt="Post Image" style="width: 50px; height: 50px; object-fit: cover;">
-                            @else
-                                <img src="{{ Storage::url($post->image) }}" alt="Post Image" style="width: 50px; height: 50px; object-fit: cover;">
-                            @endif
-                        @else
-                            <span>No Image</span>
-                        @endif
+                         @if ($post->image)
+                             @if (Str::startsWith($post->image, ['http://', 'https://']))
+                                 <img src="{{ $post->image }}" alt="Post Image" style="width: 50px; height: 50px; object-fit: cover;">
+                             @else
+                                 <img src="{{ Storage::url($post->image) }}" alt="Post Image" style="width: 50px; height: 50px; object-fit: cover;">
+                             @endif
+                         @else
+                             <span>{{ __('No Image') }}</span>
+                         @endif
                     </td>
                     {{-- @dd($post->user, $post->post()->where('id', $post->user_id)->first()) --}}
                     <td>{{ $post->user ? $post->user->name : 'not_found' }}</td>
@@ -47,16 +47,16 @@
                     <td>{{ $post->humanReadableDate }}</td>
                     <td>
                         <div>
-                            <a href="{{ route('posts.show', $post->id) }}" class="btn btn-info">View</a>
+                            <a href="{{ route('posts.show', $post->id) }}" class="btn btn-info">{{ __('View') }}</a>
                             <button type="button" class="btn btn-secondary view-ajax-btn"
-                                data-id="{{ $post->id }}">View Data</button>
-                            <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-primary">Edit</a>
+                                data-id="{{ $post->id }}">{{ __('View Data') }}</button>
+                            <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-primary">{{ __('Edit') }}</a>
                             <form method="POST" action="{{ route('posts.destroy', $post->id) }}" class="delete-form"
                                 style="display:inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="button" class="btn btn-danger delete-btn"
-                                    data-id="{{ $post->id }}">Delete</button>
+                                    data-id="{{ $post->id }}">{{ __('Delete') }}</button>
                             </form>
                         </div>
                     </td>
@@ -69,15 +69,15 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title" id="deleteConfirmLabel">Confirm Delete</h5>
+                    <h5 class="modal-title" id="deleteConfirmLabel">{{ __('Confirm Delete') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete this post?
+                    {{ __('Are you sure you want to delete this post?') }}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">{{ __('Delete') }}</button>
                 </div>
             </div>
         </div>
@@ -88,7 +88,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-info text-white">
-                    <h5 class="modal-title" id="ajaxViewLabel">Post Details (Ajax)</h5>
+                    <h5 class="modal-title" id="ajaxViewLabel">{{ __('Post Details (Ajax)') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -98,15 +98,15 @@
                         </div>
                     </div>
                     <div id="modalContent" style="display: none;">
-                        <p><strong>Title:</strong> <span id="viewTitle"></span></p>
-                        <p><strong>Description:</strong> <span id="viewDescription"></span></p>
+                        <p><strong>{{ __('Title') }}:</strong> <span id="viewTitle"></span></p>
+                        <p><strong>{{ __('Description') }}:</strong> <span id="viewDescription"></span></p>
                         <hr>
-                        <p><strong>Username:</strong> <span id="viewUsername"></span></p>
-                        <p><strong>Email:</strong> <span id="viewEmail"></span></p>
+                        <p><strong>{{ __('Username') }}:</strong> <span id="viewUsername"></span></p>
+                        <p><strong>{{ __('Email') }}:</strong> <span id="viewEmail"></span></p>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Close') }}</button>
                 </div>
             </div>
         </div>

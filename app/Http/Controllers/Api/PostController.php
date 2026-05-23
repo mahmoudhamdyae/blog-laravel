@@ -34,7 +34,9 @@ class PostController extends Controller
 
         $post = Post::create([
             'title' => $data['title'],
+            'title_ar' => $data['title_ar'] ?? null,
             'description' => $data['description'],
+            'description_ar' => $data['description_ar'] ?? null,
             'user_id' => $data['post_creator'],
             'image' => $data['image'] ?? null,
         ]);
@@ -74,7 +76,9 @@ class PostController extends Controller
 
         $post->update([
             'title' => $data['title'],
+            'title_ar' => $data['title_ar'] ?? null,
             'description' => $data['description'],
+            'description_ar' => $data['description_ar'] ?? null,
             'user_id' => $data['post_creator'],
             'image' => $data['image'] ?? $post->image,
         ]);
